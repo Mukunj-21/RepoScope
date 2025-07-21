@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -607,6 +607,1211 @@
 
         // Initialize syntax highlighting
         hljs.highlightAll();
+    </script>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repository Analyzer Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" id="highlight-theme">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        :root {
+            /* Light Theme Colors */
+            --bg-primary: #fafbfc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f6f8fa;
+            --bg-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --bg-hover: #f3f4f6;
+            --bg-selected: #e0f2fe;
+            --bg-code: #f8f9fa;
+            
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --text-accent: #2d3748;
+            --text-inverse: #ffffff;
+            
+            --border-light: #e2e8f0;
+            --border-medium: #cbd5e0;
+            --border-accent: #4299e1;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
+            
+            --accent-primary: #4299e1;
+            --accent-secondary: #48bb78;
+            --accent-danger: #f56565;
+            --accent-warning: #ed8936;
+            --accent-success: #38a169;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme Colors */
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-accent: linear-gradient(135deg, #4c6ef5 0%, #9c88ff 100%);
+            --bg-card: rgba(22, 27, 34, 0.8);
+            --bg-hover: #30363d;
+            --bg-selected: #1c2128;
+            --bg-code: #161b22;
+            
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --text-accent: #58a6ff;
+            --text-inverse: #0d1117;
+            
+            --border-light: #30363d;
+            --border-medium: #21262d;
+            --border-accent: #58a6ff;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, rgba(66, 153, 225, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--bg-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-online { background: var(--accent-success); }
+        .status-offline { background: var(--accent-danger); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--bg-tertiary);
+            border-radius: 15px;
+            border: 2px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: var(--bg-accent);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        [data-theme="dark"] .theme-toggle::before {
+            transform: translateX(28px);
+        }
+
+        .theme-toggle-icons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 6px;
+            pointer-events: none;
+        }
+
+        .theme-toggle-icons i {
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Repository Input */
+        .repo-input {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .repo-input:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .repo-input input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 14px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .repo-input input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--bg-accent);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 12px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-error {
+            background: rgba(245, 101, 101, 0.1);
+            color: var(--accent-danger);
+            border-left: 4px solid var(--accent-danger);
+        }
+
+        .status-success {
+            background: rgba(56, 161, 105, 0.1);
+            color: var(--accent-success);
+            border-left: 4px solid var(--accent-success);
+        }
+
+        .status-loading {
+            background: rgba(237, 137, 54, 0.1);
+            color: var(--accent-warning);
+            border-left: 4px solid var(--accent-warning);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 420px;
+            gap: 24px;
+            min-height: calc(100vh - 200px);
+        }
+
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 280px 1fr 360px;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .sidebar-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .repo-info {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .repo-info strong {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .file-tree {
+            list-style: none;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .file-tree::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .file-tree::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+        }
+
+        .file-tree::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 3px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin: 2px 0;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-primary);
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+
+        .file-item:hover {
+            background: var(--bg-hover);
+            transform: translateX(4px);
+        }
+
+        .file-item.selected {
+            background: var(--bg-selected);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .file-item.selected::before {
+            transform: scaleY(1);
+        }
+
+        .file-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .analyzed-badge {
+            background: var(--accent-success);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Content Area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 16px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 14px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            flex: 1;
+            min-height: 500px;
+            transition: all 0.3s ease;
+        }
+
+        .preview-header {
+            background: var(--bg-tertiary);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .preview-content {
+            height: calc(100% - 60px);
+            overflow: auto;
+            position: relative;
+        }
+
+        .preview-content::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .preview-content::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        .preview-content::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 4px;
+        }
+
+        .preview-code {
+            font-family: 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .preview-code pre {
+            margin: 0;
+            padding: 24px;
+            background: var(--bg-code) !important;
+        }
+
+        .preview-code code {
+            background: none !important;
+            padding: 0 !important;
+        }
+
+        /* Analysis Panel */
+        .analysis-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .analysis-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .analysis-content {
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            color: var(--text-secondary);
+        }
+
+        .analysis-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .analysis-content::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+        }
+
+        .analysis-content::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 3px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .loading::before {
+            content: '';
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--border-light);
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            margin-right: 16px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        
+        .glass {
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+        }
+
+        /* Dark theme specific adjustments */
+        [data-theme="dark"] .preview-code pre {
+            background: var(--bg-secondary) !important;
+        }
+        
+        [data-theme="dark"] #highlight-theme {
+            href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css";
+        }
+        
+        [data-theme="light"] #highlight-theme {
+            href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css";
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🔍</div>
+                <h1>Repository Analyzer Pro</h1>
+            </div>
+            
+            <div class="header-controls">
+                <div class="status-badge">
+                    <span id="llmStatus" class="status-indicator status-offline"></span>
+                    <span id="statusText">Checking LLM status...</span>
+                </div>
+                
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <div class="theme-toggle-icons">
+                        <i data-lucide="sun"></i>
+                        <i data-lucide="moon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="repo-input">
+            <div class="input-group">
+                <input type="url" id="repoUrl" placeholder="Enter GitHub Repository URL (e.g., https://github.com/user/repo)">
+                <button class="btn btn-primary" onclick="loadRepository()" id="loadBtn">
+                    <i data-lucide="download"></i>
+                    Load Repository
+                </button>
+            </div>
+            <div id="loadStatus"></div>
+        </div>
+
+        <div class="main-layout">
+            <!-- File Tree Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <i data-lucide="folder"></i>
+                    <h3>Repository Files</h3>
+                </div>
+                
+                <div id="repoInfo" class="repo-info hidden"></div>
+                
+                <ul id="fileTree" class="file-tree"></ul>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="content-area">
+                <div class="toolbar">
+                    <div class="search-box">
+                        <input type="text" id="searchQuery" placeholder="Search in code..." disabled>
+                    </div>
+                    <button id="searchBtn" class="btn btn-secondary" onclick="searchCode()" disabled>
+                        <i data-lucide="search"></i>
+                        Search
+                    </button>
+                    <button id="analyzeBtn" class="btn btn-primary" onclick="analyzeFile()" disabled>
+                        <i data-lucide="cpu"></i>
+                        Analyze File
+                    </button>
+                </div>
+
+                <div class="preview-panel">
+                    <div id="previewHeader" class="preview-header">
+                        <i data-lucide="file-text"></i>
+                        Select a file to preview
+                    </div>
+                    <div id="previewContent" class="preview-content">
+                        <div class="loading hidden" id="previewLoading">Loading file preview...</div>
+                        <div id="previewCode" class="preview-code"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Panel -->
+            <div class="analysis-panel">
+                <div class="analysis-header">
+                    <i data-lucide="brain"></i>
+                    <h3 id="analysisTitle">Analysis Results</h3>
+                </div>
+                <div id="analysisContent" class="analysis-content">
+                    Select a file and click "Analyze File" to see detailed AI analysis.
+                    
+                    💡 **Features:**
+                    • Comprehensive code analysis using local LLM
+                    • File structure and dependencies overview
+                    • Security and performance insights
+                    • Best practices recommendations
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            updateHighlightTheme(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateHighlightTheme(newTheme);
+            
+            // Add a subtle animation effect
+            document.body.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                document.body.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        function updateHighlightTheme(theme) {
+            const highlightTheme = document.getElementById('highlight-theme');
+            if (theme === 'dark') {
+                highlightTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css';
+            } else {
+                highlightTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css';
+            }
+        }
+
+        // Application State
+        let currentRepository = null;
+        let selectedFileId = null;
+        let analysisCache = new Map();
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+            lucide.createIcons();
+            checkLLMStatus();
+        });
+
+        function showStatus(message, type = 'info') {
+            const loadStatus = document.getElementById('loadStatus');
+            loadStatus.className = `status-message status-${type} show`;
+            loadStatus.textContent = message;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    loadStatus.classList.remove('show');
+                    setTimeout(() => {
+                        loadStatus.textContent = '';
+                        loadStatus.className = 'status-message';
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        async function checkLLMStatus() {
+            try {
+                const response = await fetch('/api/llm-status/');
+                const data = await response.json();
+                
+                const statusIndicator = document.getElementById('llmStatus');
+                const statusText = document.getElementById('statusText');
+                
+                if (data.ollama_available) {
+                    statusIndicator.className = 'status-indicator status-online';
+                    statusText.textContent = `Ollama Online (${data.available_models.length} models)`;
+                } else {
+                    statusIndicator.className = 'status-indicator status-offline';
+                    statusText.textContent = 'Ollama Offline - Fallback mode';
+                }
+            } catch (error) {
+                console.error('Error checking LLM status:', error);
+                document.getElementById('statusText').textContent = 'Status unknown';
+            }
+        }
+
+        async function loadRepository() {
+            const url = document.getElementById('repoUrl').value.trim();
+            const loadBtn = document.getElementById('loadBtn');
+            
+            if (!url) {
+                showStatus('Please enter a GitHub repository URL', 'error');
+                return;
+            }
+
+            try {
+                loadBtn.disabled = true;
+                loadBtn.innerHTML = '<i data-lucide="loader-2"></i> Loading...';
+                lucide.createIcons();
+                showStatus('Fetching repository data...', 'loading');
+                
+                const response = await fetch('/api/analyze-repository/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ github_url: url })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load repository');
+                }
+                
+                currentRepository = data.repository_id;
+                displayRepositoryInfo(data.repository_info);
+                displayFileTree(data.files);
+                enableControls();
+                
+                showStatus(`✅ Loaded ${data.total_files} files successfully`, 'success');
+                
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, 'error');
+            } finally {
+                loadBtn.disabled = false;
+                loadBtn.innerHTML = '<i data-lucide="download"></i> Load Repository';
+                lucide.createIcons();
+            }
+        }
+
+        function displayRepositoryInfo(info) {
+            const repoInfo = document.getElementById('repoInfo');
+            repoInfo.innerHTML = `
+                <strong>${info.owner}/${info.name}</strong>
+                <div style="margin: 8px 0; color: var(--text-muted);">${info.description || 'No description available'}</div>
+                <div style="font-size: 12px; opacity: 0.8;">
+                    <strong>Language:</strong> ${info.language || 'Mixed'}
+                </div>
+            `;
+            repoInfo.classList.remove('hidden');
+        }
+
+        function displayFileTree(files) {
+            const fileTree = document.getElementById('fileTree');
+            fileTree.innerHTML = '';
+            
+            files.forEach(file => {
+                const li = document.createElement('li');
+                li.className = 'file-item';
+                li.onclick = () => selectFile(file.id, li, file);
+                li.dataset.fileId = file.id;
+                
+                const icon = getFileIcon(file.file_type);
+                const fileName = file.file_path.split('/').pop();
+                
+                li.innerHTML = `
+                    <span class="file-icon">${icon}</span>
+                    <span class="file-name">${fileName}</span>
+                    ${file.analyzed ? '<span class="analyzed-badge">✓</span>' : ''}
+                `;
+                li.title = file.file_path;
+                
+                fileTree.appendChild(li);
+            });
+        }
+
+        function getFileIcon(fileType) {
+            const icons = {
+                'py': '🐍', 'js': '📜', 'ts': '🔷', 'html': '🌐', 'css': '🎨',
+                'json': '📋', 'md': '📝', 'txt': '📄', 'yml': '⚙️', 'yaml': '⚙️',
+                'java': '☕', 'cpp': '⚡', 'c': '⚡', 'php': '💜', 'rb': '💎',
+                'go': '🔵', 'rs': '🦀', 'swift': '🦉', 'kt': '🟣'
+            };
+            return icons[fileType] || '📄';
+        }
+
+        async function selectFile(fileId, element, fileInfo = null) {
+            // Update selection
+            document.querySelectorAll('.file-item').forEach(item => 
+                item.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            selectedFileId = fileId;
+            document.getElementById('analyzeBtn').disabled = false;
+            
+            // Load file preview
+            await loadFilePreview(fileId);
+        }
+
+        async function loadFilePreview(fileId) {
+            const previewLoading = document.getElementById('previewLoading');
+            const previewCode = document.getElementById('previewCode');
+            const previewHeader = document.getElementById('previewHeader');
+            
+            try {
+                previewLoading.classList.remove('hidden');
+                previewCode.innerHTML = '';
+                
+                const response = await fetch(`/api/preview-file/${fileId}/`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load preview');
+                }
+                
+                previewHeader.innerHTML = `
+                    <i data-lucide="file-text"></i>
+                    ${data.file_path}
+                    <span style="font-size: 12px; opacity: 0.7; margin-left: 12px;">
+                        ${formatFileSize(data.file_size)} • ${data.total_lines} lines
+                    </span>
+                `;
+                
+                // Create syntax highlighted preview
+                const codeElement = document.createElement('pre');
+                const code = document.createElement('code');
+                code.className = `language-${data.file_type}`;
+                code.textContent = data.preview;
+                codeElement.appendChild(code);
+                
+                previewCode.appendChild(codeElement);
+                hljs.highlightElement(code);
+                
+                previewLoading.classList.add('hidden');
+                lucide.createIcons();
+                
+            } catch (error) {
+                previewLoading.classList.add('hidden');
+                previewCode.innerHTML = `<div style="padding: 40px; text-align: center; color: var(--accent-danger);">
+                    <i data-lucide="alert-circle" style="width: 48px; height: 48px; margin-bottom: 16px;"></i>
+                    <div>Error loading preview: ${error.message}</div>
+                </div>`;
+                lucide.createIcons();
+            }
+        }
+
+        async function analyzeFile() {
+            if (!selectedFileId) return;
+
+            const analysisContent = document.getElementById('analysisContent');
+            const analysisTitle = document.getElementById('analysisTitle');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            
+            try {
+                analyzeBtn.disabled = true;
+                analyzeBtn.innerHTML = '<i data-lucide="loader-2"></i> Analyzing...';
+                lucide.createIcons();
+                
+                analysisTitle.textContent = 'AI Analysis in Progress...';
+                analysisContent.innerHTML = '<div class="loading">Running comprehensive analysis...</div>';
+                
+                const response = await fetch('/api/analyze-file/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ file_id: selectedFileId })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Analysis failed');
+                }
+                
+                analysisTitle.innerHTML = `<i data-lucide="brain"></i> Analysis: ${data.file_path.split('/').pop()}`;
+                analysisContent.textContent = data.analysis;
+                
+                // Cache the analysis
+                analysisCache.set(selectedFileId, data.analysis);
+                
+                // Update file item to show it's analyzed
+                const fileItem = document.querySelector(`[data-file-id="${selectedFileId}"]`);
+                if (fileItem && !fileItem.querySelector('.analyzed-badge')) {
+                    fileItem.innerHTML += '<span class="analyzed-badge">✓</span>';
+                }
+                
+                lucide.createIcons();
+                
+            } catch (error) {
+                analysisTitle.innerHTML = '<i data-lucide="alert-triangle"></i> Analysis Failed';
+                analysisContent.textContent = `Error: ${error.message}`;
+                lucide.createIcons();
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerHTML = '<i data-lucide="cpu"></i> Analyze File';
+                lucide.createIcons();
+            }
+        }
+
+        async function searchCode() {
+            const query = document.getElementById('searchQuery').value.trim();
+            const searchBtn = document.getElementById('searchBtn');
+            
+            if (!query || !currentRepository) return;
+
+            const analysisContent = document.getElementById('analysisContent');
+            const analysisTitle = document.getElementById('analysisTitle');
+            
+            try {
+                searchBtn.disabled = true;
+                searchBtn.innerHTML = '<i data-lucide="loader-2"></i> Searching...';
+                lucide.createIcons();
+                
+                analysisTitle.innerHTML = '<i data-lucide="search"></i> Searching...';
+                analysisContent.innerHTML = '<div class="loading">Searching through codebase...</div>';
+                
+                const response = await fetch('/api/search-code/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        repository_id: currentRepository, 
+                        search_query: query 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Search failed');
+                }
+                
+                analysisTitle.innerHTML = `<i data-lucide="search"></i> Search Results: "${query}"`;
+                analysisContent.textContent = data.results;
+                
+                lucide.createIcons();
+                
+            } catch (error) {
+                analysisTitle.innerHTML = '<i data-lucide="alert-triangle"></i> Search Failed';
+                analysisContent.textContent = `Error: ${error.message}`;
+                lucide.createIcons();
+            } finally {
+                searchBtn.disabled = false;
+                searchBtn.innerHTML = '<i data-lucide="search"></i> Search';
+                lucide.createIcons();
+            }
+        }
+
+        function enableControls() {
+            document.getElementById('searchQuery').disabled = false;
+            document.getElementById('searchBtn').disabled = false;
+        }
+
+        function formatFileSize(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            if (bytes === 0) return '0 Bytes';
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+        }
     </script>
 </body>
 </html>

@@ -64,6 +64,7 @@ class GitHubService:
             'py', 'js', 'ts', 'jsx', 'tsx', 'java', 'cpp', 'c', 'h', 'hpp',
             'cs', 'php', 'rb', 'go', 'rs', 'swift', 'kt', 'scala', 'clj',
             'hs', 'elm', 'dart', 'lua', 'perl', 'r', 'matlab', 'm',
+            'cpp', 'cc', 'cxx', 'c++', 'cp', 'hpp', 'h++', 'hxx',
             
             # Web technologies
             'html', 'htm', 'css', 'scss', 'sass', 'less', 'vue', 'svelte',
