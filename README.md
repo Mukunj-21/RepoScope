@@ -128,17 +128,20 @@ cd github-repo-analyzer
 
 ### 2. Setup Environment
 ```bash
-Create virtual environment
+# Create virtual environment
 python -m venv venv
 
-Activate virtual environment
-On macOS/Linux:
+# Activate virtual environment
+# On macOS/Linux:
+
 source venv/bin/activate
 
-On Windows:
+# On Windows:
+
 venv\Scripts\activate
 
-Install dependencies
+# Install dependencies
+
 pip install -r requirements.txt
 ```
 
@@ -146,10 +149,12 @@ pip install -r requirements.txt
 ### 3. Configure Environment Variables
 
 ```bash
-Create .env file
+# Create .env file
+
 cp .env.example .env
 
-Edit .env with your settings
+# Edit .env with your settings
+
 GITHUB_TOKEN=your_github_personal_access_token # Optional
 SECRET_KEY=your_django_secret_key
 DEBUG=True
@@ -167,13 +172,16 @@ python manage.py migrate
 ### 5. Install Ollama (for AI Analysis)
 
 ```bash
-macOS
+# macOS
+
 curl -fsSL https://ollama.ai/install.sh | sh
 
-Start Ollama service
+# Start Ollama service
+
 ollama serve
 
-Pull required models (in another terminal)
+# Pull required models (in another terminal)
+
 ollama pull codellama:7b
 ollama pull llama3:8b
 ```
