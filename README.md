@@ -405,11 +405,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/github-repo-analyzer?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/github-repo-analyzer?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/github-repo-analyzer)
-![GitHub license](https://img.shields.io/github/license/yourusername/github-repo-analyzer)
-![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/github-repo-analyzer)
+![GitHub stars](https://img.shields.io/github/stars/Mukunj-21/RepoScope?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Mukunj-21/RepoScope?style=social)
+![GitHub issues](https://img.shields.io/github/issues/Mukunj-21/RepoScope)
+![GitHub license](https://img.shields.io/github/license/Mukunj-21/RepoScope)
+![GitHub last commit](https://img.shields.io/github/last-commit/Mukunj-21/RepoScope)
 
 **⭐ Star this repository if you found it helpful!**
 
