@@ -417,8 +417,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by [Your Name](https://github.com/yourusername)**
+**Built with ❤️ by [Mukunj Mundhra](https://github.com/Mukunj-21/)**
 
-[🌟 Star](https://github.com/yourusername/github-repo-analyzer) • [🍴 Fork](https://github.com/yourusername/github-repo-analyzer/fork) • [📖 Docs](https://github.com/yourusername/github-repo-analyzer/wiki) • [🐛 Issues](https://github.com/yourusername/github-repo-analyzer/issues)
+[🌟 Star](https://github.com/Mukunj-21/RepoScope) • [🍴 Fork](https://github.com/Mukunj-21/RepoScope/fork) • [📖 Docs](https://github.com/Mukunj-21/RepoScope/wiki) • [🐛 Issues](https://github.com/Mukunj-21/RepoScope/issues)
 
 </div>
